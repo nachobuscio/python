@@ -1,5 +1,27 @@
 import sys
-clientes = ['Pablo', 'Ricardo', 'José', 'Ignacio']
+clientes = [
+    {
+        'name': 'Pablo',
+        'company': 'Google',
+        'email': 'pablo@google.com',
+        'position': 'Software engineer',
+
+    },
+    {
+        'name': 'Ricardo',
+        'company': 'Oracle',
+        'email': 'pablo@Oracle.com',
+        'position': 'Data engineer',
+
+    },
+    {
+        'name': 'Jose',
+        'company': 'Facebok',
+        'email': 'pablo@Facebok.com',
+        'position': 'Software engineer',
+
+    },
+]
 
 def create_cliente(cliente_name):
     global clientes
@@ -18,10 +40,12 @@ def update_client(cliente_name, update_client_name):
         print('Client is not in clientes list')
 
 
-def delete_cliente(delete_cliente_name):
+def delete_cliente(client):
     global clientes
-    if delete_cliente_name in clientes:
-        clientes = clientes.remove(delete_cliente_name)
+    print(client)
+    print(clientes['name'])
+    if client in clientes['name']:
+        clientes = clientes.remove(client)
     else:
         print('Client is not in clientes list')
 
@@ -37,7 +61,23 @@ def search_client(cliente_name):
 
 def list_cliente():
     for idx, cliente in enumerate(clientes):
-        print('{}:{}'.format(idx, cliente))
+        print('{uid}| {name} | {company} | {email} | {position}'.format(
+            uid = idx,
+            name = cliente['name'],
+            company = cliente['company'],
+            email = cliente['email'],
+            position = cliente['position']
+        ))
+
+
+def _get_client_field(field_name):
+    field = None
+
+    while not field:
+        field = input('What is the client {}?'.format(field_name))
+
+    return field
+
 
 def get_cliente_name():
     client_name = None
@@ -60,7 +100,7 @@ def _print_welcome():
     print('[C]reate client')
     print('[U]pdate client')
     print('[D]elete client')
-    print('[P]Prueba')
+    print('[L]List')
     print('[S]erch')
 
 if __name__ == '__main__':
@@ -70,22 +110,27 @@ if __name__ == '__main__':
     command = command.upper()
 
     if command == 'C':
-        cliente_name = get_cliente_name()
-        create_cliente(cliente_name)
+        client = {
+            'name': _get_client_field('name'),
+            'company': _get_client_field('company'),
+            'email': _get_client_field('email'),
+            'position': _get_client_field('position'),
+        }
+        create_cliente(client)
         list_cliente()
     elif command == 'D':
-            delete_cliente_name = get_cliente_name()
-            delete_cliente(delete_cliente_name)
+            client = {
+                'name': _get_client_field('name'),
+            }
+            delete_cliente(client)
             list_cliente()
     elif command == 'U':
             cliente_name = get_cliente_name()
             update_client_name = get_cliente_name()
             update_client(cliente_name, update_client_name)
             list_cliente()
-    elif command == 'P':
-            var = 'Hola como estas?'
-            var2 = var[::-1]
-            print(var2)
+    elif command == 'L':
+            list_cliente()
     elif command == 'S':
             cliente_name = get_cliente_name()
             found = search_client(cliente_name)
