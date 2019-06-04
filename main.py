@@ -23,7 +23,7 @@ clientes = [
     },
 ]
 
-def create_cliente(cliente_name):
+def create_client(cliente_name):
     global clientes
     if cliente_name not in clientes:
         clientes.append(cliente_name)
@@ -31,23 +31,34 @@ def create_cliente(cliente_name):
         print('Client already is in client\'s list')
 
 
-def update_client(cliente_name, update_client_name):
-    global clientes
-    if cliente_name in clientes:
-        index = clientes.index(cliente_name)
-        clientes[index] = update_client_name
-    else:
+
+def update_client(client_name, update_client_name):
+    global clientes, esta
+    esta = 'N'
+    for idx, client in enumerate(clientes):
+        if client['name'] == client_name['name']:
+            client_name['name'] =  update_client_name['name']
+            esta = 'S'
+            break
+
+    if esta == 'N':
         print('Client is not in clientes list')
 
 
-def delete_cliente(client):
-    global clientes
-    print(client)
-    print(clientes['name'])
-    if client in clientes['name']:
-        clientes = clientes.remove(client)
-    else:
+
+def delete_client(client_name):
+    global clientes, esta
+
+    esta = 'N'
+    for idx, client in enumerate(clientes):
+        if client['name'] == client_name['name']:
+            del clientes[idx]
+            esta = 'S'
+            break
+
+    if esta == 'N':
         print('Client is not in clientes list')
+
 
 def search_client(cliente_name):
     global clientes
@@ -59,7 +70,7 @@ def search_client(cliente_name):
 
 
 
-def list_cliente():
+def list_client():
     for idx, cliente in enumerate(clientes):
         print('{uid}| {name} | {company} | {email} | {position}'.format(
             uid = idx,
@@ -116,21 +127,23 @@ if __name__ == '__main__':
             'email': _get_client_field('email'),
             'position': _get_client_field('position'),
         }
-        create_cliente(client)
-        list_cliente()
+        create_client(client)
+        list_client()
     elif command == 'D':
             client = {
                 'name': _get_client_field('name'),
             }
-            delete_cliente(client)
-            list_cliente()
+            delete_client(client)
+            list_client()
     elif command == 'U':
-            cliente_name = get_cliente_name()
-            update_client_name = get_cliente_name()
-            update_client(cliente_name, update_client_name)
-            list_cliente()
+            client = {
+                'name': _get_client_field('name'),
+            }
+            update_client = "NAcho"
+            update_client(client, update_client)
+            list_client()
     elif command == 'L':
-            list_cliente()
+            list_client()
     elif command == 'S':
             cliente_name = get_cliente_name()
             found = search_client(cliente_name)
