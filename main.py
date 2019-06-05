@@ -37,7 +37,7 @@ def update_client(client_name, update_client_name):
     esta = 'N'
     for idx, client in enumerate(clientes):
         if client['name'] == client_name['name']:
-            client_name['name'] =  update_client_name['name']
+            client['name'] =  update_client_name['name']
             esta = 'S'
             break
 
@@ -60,14 +60,23 @@ def delete_client(client_name):
         print('Client is not in clientes list')
 
 
-def search_client(cliente_name):
-    global clientes
-    for client in clientes:
-        if cliente_name != clientes:
-            continue
-        else:
-            return True
+def search_client(client_name):
+    global clientes, esta
+    esta = 'N'
+    for idx, client in enumerate(clientes):
+        if client['name'] == client_name['name']:
+            print('{uid}| {name} | {company} | {email} | {position}'.format(
+                uid = idx,
+                name = client['name'],
+                company = client['company'],
+                email = client['email'],
+                position = client['position']
+            ))
+            esta = 'S'
+            break
 
+    if esta == 'N':
+        print('Client is not in clientes list')
 
 
 def list_client():
@@ -136,21 +145,31 @@ if __name__ == '__main__':
             delete_client(client)
             list_client()
     elif command == 'U':
-            client = {
+            esta = 'N'
+            client_name = {
                 'name': _get_client_field('name'),
             }
-            update_client = "NAcho"
-            update_client(client, update_client)
-            list_client()
+            update_client_name = {
+                'name': _get_client_field('name'),
+            }
+
+            for idx, client in enumerate(clientes):
+                if client['name'] == client_name['name']:
+                    client['name'] =  update_client_name['name']
+                    esta = 'S'
+                    break
+
+            if esta == 'N':
+                print('Client is not in clientes list')
+            else:
+                list_client()
     elif command == 'L':
             list_client()
     elif command == 'S':
-            cliente_name = get_cliente_name()
-            found = search_client(cliente_name)
-            if found:
-                print('The client: {} is in cliente\'s list'.format(cliente_name))
-            else:
-                print('The client: {} is not in our client\'s list'.format(cliente_name) )
+            client = {
+                'name': _get_client_field('name'),
+            }
+            search_client(client)
 
     else:
         Print('Error')
